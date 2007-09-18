@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# applies SQL patch to a database and inserts a revision control entry in the
+# database.
+
+patch=$1
+db=markkit
+db_user=root
+
+ctrl_patch_query="insert into ctrl_patch values ('', '$patch')"
+
+cat $patch
+mysql -u $db_user $db < $patch
+echo $ctrl_patch_query
+echo $ctrl_patch_query | mysql -u $db_user $db 
