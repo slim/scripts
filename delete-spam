@@ -1,0 +1,11 @@
+#!/bin/sh
+
+MAILDIR=$1
+
+for f in $(find $MAILDIR); 
+do 
+	if grep -q "\*\*\*SPAM" $f; 
+	then 
+		rm $f 
+	fi
+done
