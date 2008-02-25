@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# backup mysql database
+
+BACKUP_FILE_NAME=nout-flyspray-daily.sql.gz
+DATABASE=flyspray
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=""
+REMOTE_BACKUP_DIR="backup@55.55.55.20:/var/backups/"
+
+LOCAL_BACKUP_DIR=/var/backups/
+
+/usr/bin/mysqldump -h $DB_HOST -u $DB_USER --password=$DB_PASSWORD $DATABASE | /bin/gzip -c > $LOCAL_BACKUP_DIR/$BACKUP_FILE_NAME
+/usr/bin/scp $LOCAL_BACKUP_DIR/$BACKUP_FILE_NAME $REMOTE_BACKUP_DIR
