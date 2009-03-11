@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# backup a directory
+
+BACKUP_FILE_NAME=nout-dokuwiki-daily.tar.gz
+DATA_DIR=/usr/share/dokuwiki/
+REMOTE_BACKUP_DIR="backup@55.55.55.20:/var/backups/"
+
+
+LOCAL_BACKUP_DIR=/var/backups/
+
+cd $(dirname $DATA_DIR)
+/bin/tar -chzf $LOCAL_BACKUP_DIR/$BACKUP_FILE_NAME $(basename $DATA_DIR)
+/usr/bin/scp $LOCAL_BACKUP_DIR/$BACKUP_FILE_NAME $REMOTE_BACKUP_DIR

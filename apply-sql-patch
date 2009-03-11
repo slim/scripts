@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# applies SQL patch to a database and inserts a revision control entry in the
+# database.
+# usage :
+# apply-sql-patch (without arguments)
+# prints sql statements to initialise the datbase
+# apply-sql-patch <patch-file>
+# applies the patch to the database
+
+if [ $# -ne 2 ] 
+then cat<<EOF
+--
+-- you have to apply manually this SQL patch to your database
+-- to create the needed ctrl_patch table
+--
+create table ctrl_patch (id integer auto_increment primary key, time timestamp, name varchar(128) unique);
+insert into ctrl_patch values (NULL,NULL, 'patch-create-ctrl_patch.sql');
+EOF
+exit
+fi
+
+patch=$1
+db=$2
+db_user=root
+
+ctrl_patch_query="insert into ctrl_patch values (NULL,NULL, '$patch')"
+
+cat $patch
+mysql -u $db_user $db < $patch
+echo $ctrl_patch_query
+if [ $? ]
+then
+echo $ctrl_patch_query | mysql -u $db_user $db 
+fi
