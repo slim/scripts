@@ -1,0 +1,3 @@
+#!/bin/sh
+
+git log --since="$1" --until="$2" --pretty=format:"  * %s" | cat
